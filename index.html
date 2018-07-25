@@ -1,0 +1,122 @@
+$def with (timestamp, a)
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+<head>
+    <title>接口测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css" media="screen">
+        body {
+            margin: 0;
+            font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+            line-height: 1.5;
+            color: #333333;
+        }
+
+        .table {
+            margin-bottom: 1px;
+            width: 100%;
+        }
+
+        .hiddenRow {
+            display: none;
+        }
+
+        .container-fluid {
+            padding-right: 120px;
+            padding-left: 120px;
+        }
+
+        .nav-tabs li {
+            width: 186px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Tests Report</h1>
+    <div class="time">
+        <div class="col-md-3">Time</div><div class="col-md-9">$timestamp</div>
+        <div class="col-md-12">&nbsp;</div>
+        <div class="col-md-4">&nbsp;</div><div class="col-md-4"><strong>Total</strong></div><div class="col-md-4"><strong>Failed</strong></div>
+
+      {{#with summary}}
+        {{#with stats}}
+          <div class="col-md-4">Iterations</div><div class="col-md-4">$a</div><div class="col-md-4">{{iterations.failed}}</div>
+          <div class="col-md-4">Requests</div><div class="col-md-4">{{requests.total}}</div><div class="col-md-4">{{requests.failed}}</div>
+          <div class="col-md-4">Prerequest Scripts</div><div class="col-md-4">{{prerequestScripts.total}}</div><div class="col-md-4">{{prerequestScripts.failed}}</div>
+          <div class="col-md-4">Test Scripts</div><div class="col-md-4">{{testScripts.total}}</div><div class="col-md-4">{{testScripts.failed}}</div>
+          <div class="col-md-4">Assertions</div><div class="col-md-4">{{assertions.total}}</div><div class="col-md-4">{{assertions.failed}}</div>
+        {{/with}}
+
+        <div class="col-md-12">&nbsp;</div>
+        <div class="col-md-6">Total run duration</div><div class="col-md-6">{{duration}}</div>
+        <div class="col-md-6">Total data received</div><div class="col-md-6">{{responseTotal}} (approx)</div>
+        <div class="col-md-6">Average response time</div><div class="col-md-6">{{responseAverage}}</div>
+
+        <div class="col-md-12">&nbsp;</div>
+        <div class="col-md-3"><strong>Total Failures</strong></div><div class="col-md-6"><strong>{{failures.length}}</strong></div>
+      {{/with}}
+    </div>
+
+    <br/><h4>Requests</h4>
+
+    {{#each aggregations}}
+        {{#if parent.name}}
+        <div class="panel-group" id="collapse-folder-{{parent.id}}" role="tablist" aria-multiselectable="true">
+            <div role="tab" id="folderHead-{{parent.id}}">
+                <h4 style="font-size: 18px;" class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#folderData-{{parent.id}}" aria-controls="collapseOne"><strong>{{parent.name}}</strong></a></h4>
+            </div>
+            <br/>
+            <div id="folderData-{{parent.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="folderHead-{{parent.id}}">
+            {{> aggregations}}
+            </div>
+        </div>
+        {{else}}
+        {{> aggregations}}
+        {{/if}}
+    {{/each}}
+
+    {{#if summary.failures.length}}
+        <br/><h4>Failures</h4>
+
+        {{#each summary.failures}}
+            <div class="panel-group" id="collapse-failure-{{@index}}" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="failureHead-{{@index}}">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#failureData-{{@index}}" aria-controls="collapseOne">
+                                {{error.name}}: {{#if error.test}}{{error.test}}{{else}}{{error.message}}{{/if}}
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="failureData-{{@index}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="failureHead-{{@index}}">
+                        <div class="panel-body">
+                            <div class="col-md-12">&nbsp;</div>
+                            {{#if error.test}}
+                                <div class="col-md-4">Description</div><div class="col-md-8">{{error.message}}</div><br/>
+                            {{/if}}
+
+                            <div class="col-md-4">Location</div><div class="col-md-8">{{at}}</div><br/>
+                            <div class="col-md-4">Request</div><div class="col-md-8">
+                                <a href="#collapse-request-{{source.id}}">{{source.name}}</a>
+                            </div>
+                            {{#gt cursor.cycles 1}}
+                                <div class="col-md-4">Iteration</div><div class="col-md-8">{{add cursor.iteration 1}}</div><br/>
+                            {{/gt}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    {{/if}}
+  </div>
+</body>
+</html>
+'''
